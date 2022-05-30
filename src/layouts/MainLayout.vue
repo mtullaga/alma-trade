@@ -12,10 +12,12 @@
         />
 
         <q-toolbar-title>
-          Quasar App
+          Almanon Trading
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <div>
+          <q-btn color="white" text-color="black" @click="logout" label="Logout" />
+        </div>
       </q-toolbar>
     </q-header>
 
@@ -28,7 +30,7 @@
         <q-item-label
           header
         >
-          Essential Links
+          
         </q-item-label>
 
         <EssentialLink
@@ -48,50 +50,23 @@
 <script>
 import { defineComponent, ref } from 'vue'
 import EssentialLink from 'components/EssentialLink.vue'
+import { getAuth, signOut } from "firebase/auth";
+import { useRouter, useRoute } from "vue-router";
 
 const linksList = [
   {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
+    title: 'Tires',
+    icon: 'tire_repair',
+    link: 'login'
   },
   {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
+    title: 'M Tubes',
+    icon: 'donut_large',
   },
   {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
+    title: 'Bikes',
+    icon: 'pedal_bike',
   },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
 ]
 
 export default defineComponent({
@@ -102,14 +77,26 @@ export default defineComponent({
   },
 
   setup () {
+    const router = useRouter();
     const leftDrawerOpen = ref(false)
+
+    function logout(){
+      const auth = getAuth();
+      signOut(auth).then(() => {
+        console.log('Sign Out successful.')
+        router.push({ path: '/login' });
+      }).catch((error) => {
+        console.log(error)
+      });
+    }
 
     return {
       essentialLinks: linksList,
       leftDrawerOpen,
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
-      }
+      },
+      logout,
     }
   }
 })
