@@ -11,27 +11,24 @@
           @click="toggleLeftDrawer"
         />
 
-        <q-toolbar-title>
-          Almanon Trading
-        </q-toolbar-title>
+        <q-toolbar-title> Almanon Trading </q-toolbar-title>
 
         <div>
-          <q-btn color="white" text-color="black" @click="logout" label="Logout" />
+          <q-btn
+            color="white"
+            text-color="black"
+            @click="logout"
+            label="Logout"
+          />
         </div>
       </q-toolbar>
     </q-header>
 
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-    >
+    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
       <q-list>
-        <q-item-label
-          header
-        >
-          
-        </q-item-label>
+        <q-item-label header> </q-item-label>
+
+        <q-separator />
 
         <EssentialLink
           v-for="link in essentialLinks"
@@ -48,56 +45,65 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue'
-import EssentialLink from 'components/EssentialLink.vue'
+import { defineComponent, ref } from "vue";
+import EssentialLink from "components/EssentialLink.vue";
 import { getAuth, signOut } from "firebase/auth";
 import { useRouter, useRoute } from "vue-router";
 
 const linksList = [
   {
-    title: 'Tires',
-    icon: 'tire_repair',
-    link: 'login'
+    title: "Dashboard",
+    icon: "dashboard",
+    link: "/",
   },
   {
-    title: 'M Tubes',
-    icon: 'donut_large',
+    title: "Tires",
+    icon: "tire_repair",
+    link: "tires",
   },
   {
-    title: 'Bikes',
-    icon: 'pedal_bike',
+    title: "M Tubes",
+    icon: "donut_large",
+    link: "m-tubes",
   },
-]
+  {
+    title: "Bikes",
+    icon: "pedal_bike",
+    link: "bikes",
+  },
+];
 
 export default defineComponent({
-  name: 'MainLayout',
+  name: "MainLayout",
 
   components: {
-    EssentialLink
+    EssentialLink,
   },
 
-  setup () {
+  setup() {
     const router = useRouter();
-    const leftDrawerOpen = ref(false)
+    const leftDrawerOpen = ref(false);
 
-    function logout(){
+    function logout() {
       const auth = getAuth();
-      signOut(auth).then(() => {
-        console.log('Sign Out successful.')
-        router.push({ path: '/login' });
-      }).catch((error) => {
-        console.log(error)
-      });
+      signOut(auth)
+        .then(() => {
+          console.log("Sign Out successful.");
+          router.push({ path: "/login" });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
 
     return {
       essentialLinks: linksList,
       leftDrawerOpen,
-      toggleLeftDrawer () {
-        leftDrawerOpen.value = !leftDrawerOpen.value
+      toggleLeftDrawer() {
+        leftDrawerOpen.value = !leftDrawerOpen.value;
       },
       logout,
-    }
-  }
-})
+    };
+  },
+});
 </script>
