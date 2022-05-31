@@ -8,7 +8,7 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter, useRoute } from "vue-router";
 
 export default defineComponent({
-  name: "DashboardPage",
+  name: "BikePage",
   setup() {
     const router = useRouter();
 

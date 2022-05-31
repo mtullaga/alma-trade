@@ -14,19 +14,39 @@
         <q-toolbar-title> Almanon Trading </q-toolbar-title>
 
         <div>
-          <q-btn
+          <!-- <q-btn
             color="white"
             text-color="black"
             @click="logout"
             label="Logout"
-          />
+          /> -->
+          <!-- <q-btn color="primary" label="Basic Menu"> -->
+          <q-btn round color="primary" icon="account_circle">
+            <q-menu>
+              <q-list style="min-width: 100px">
+                <q-item clickable v-close-popup>
+                  <q-item-section>Change Password</q-item-section>
+                </q-item>
+                <q-item clickable v-close-popup @click="logout">
+                  <q-item-section>Logout</q-item-section>
+                </q-item>
+                <q-separator />
+              </q-list>
+            </q-menu>
+          </q-btn>
         </div>
       </q-toolbar>
     </q-header>
 
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
       <q-list>
-        <q-item-label header> </q-item-label>
+        <q-item-label header>
+          <q-img
+            src="../assets/logo.png"
+            spinner-color="white"
+            style="height: 120px; max-width: 270px"
+          />
+        </q-item-label>
 
         <q-separator />
 
@@ -70,6 +90,11 @@ const linksList = [
     title: "Bikes",
     icon: "pedal_bike",
     link: "bikes",
+  },
+  {
+    title: "User Management",
+    icon: "people",
+    link: "users",
   },
 ];
 

@@ -10,6 +10,7 @@ const routes = [
       { path: "tires", component: () => import("pages/TirePage.vue") },
       { path: "m-tubes", component: () => import("pages/MtubePage.vue") },
       { path: "bikes", component: () => import("pages/BikePage.vue") },
+      { path: "users", component: () => import("pages/UserPage.vue") },
     ],
   },
   {
