@@ -21,7 +21,7 @@
             icon-right="account_circle"
           >
             <q-menu>
-              <q-list style="min-width: 100px">
+              <q-list style="width: 180px">
                 <q-item
                   clickable
                   v-close-popup
@@ -30,7 +30,9 @@
                   <q-item-section>Change Password</q-item-section>
                 </q-item>
                 <q-item clickable v-close-popup @click="logout">
-                  <q-item-section>Logout</q-item-section>
+                  <q-item-section class="text-negative"
+                    ><b>Logout</b></q-item-section
+                  >
                 </q-item>
                 <q-separator />
               </q-list>
@@ -146,22 +148,37 @@ const linksList = [
   {
     title: "Tires",
     icon: "tire_repair",
-    link: "tires",
+    link: "/tires",
   },
   {
     title: "M Tubes",
     icon: "donut_large",
-    link: "m-tubes",
+    link: "/m-tubes",
   },
   {
     title: "Bikes",
     icon: "pedal_bike",
-    link: "bikes",
+    link: "/bikes",
+  },
+  {
+    title: "Motor Parts",
+    icon: "settings_input_composite",
+    link: "/motor-parts",
+  },
+  {
+    title: "Stock In",
+    icon: "login",
+    link: "/stock-in",
+  },
+  {
+    title: "Stock Out",
+    icon: "logout",
+    link: "/stock-out",
   },
   {
     title: "User Management",
     icon: "people",
-    link: "users",
+    link: "/users",
   },
 ];
 
@@ -198,6 +215,11 @@ export default defineComponent({
 
       snapCurrentUser.forEach((el) => {
         loggedUser.value = el.data().firstName;
+        localStorage.setItem(
+          "currentUserName",
+          el.data().firstName + " " + el.data().lastName
+        );
+        localStorage.setItem("currentUserId", el.id);
       });
     });
 
@@ -209,6 +231,8 @@ export default defineComponent({
         .then(() => {
           localStorage.setItem("activeUserEmail", "");
           localStorage.setItem("currentPass", "");
+          localStorage.setItem("currentUserId", "");
+
           console.log("Sign Out successful.");
           router.push({ path: "/login" });
         })

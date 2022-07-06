@@ -221,6 +221,7 @@ import {
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { useRouter, useRoute } from "vue-router";
 import emailjs from "@emailjs/browser";
+import { userColumns } from "src/config/grids";
 
 export default defineComponent({
   name: "UserPage",
@@ -240,96 +241,7 @@ export default defineComponent({
     const email = ref("");
     const showUserDialog = ref(false);
     const showInvitationDialog = ref(false);
-    const columns = ref([
-      {
-        name: "uid",
-        label: "uid",
-        field: "uid",
-        classes: "hidden",
-        headerClasses: "hidden",
-      },
-      {
-        name: "firstName",
-        label: "First Name",
-        field: "firstName",
-        align: "left",
-        sortable: true,
-      },
-      {
-        name: "lastName",
-        label: "Last Name",
-        field: "lastName",
-        align: "left",
-        sortable: true,
-      },
-      {
-        name: "contact",
-        label: "Contact",
-        field: "contact",
-        align: "left",
-        sortable: false,
-      },
-      {
-        name: "address",
-        label: "Address",
-        field: "address",
-        align: "left",
-        sortable: true,
-      },
-      {
-        name: "role",
-        label: "Role",
-        field: "role",
-        align: "left",
-        sortable: true,
-      },
-      {
-        name: "email",
-        label: "Email",
-        field: "email",
-        align: "left",
-        sortable: true,
-      },
-      {
-        name: "created",
-        label: "Created At",
-        field: "created",
-        align: "left",
-        format: (val) => {
-          if (val) {
-            let ret = new Date(val.toDate());
-            return ret.toLocaleDateString() + ", " + ret.toLocaleTimeString();
-          } else {
-            return "";
-          }
-        },
-        sortable: true,
-        classes: "hidden",
-        headerClasses: "hidden",
-      },
-      {
-        name: "updated",
-        label: "Updated At",
-        field: "updated",
-        align: "left",
-        format: (val) => {
-          if (val) {
-            let ret = new Date(val.toDate());
-            return ret.toLocaleDateString() + ", " + ret.toLocaleTimeString();
-          } else {
-            return "";
-          }
-        },
-        sortable: true,
-      },
-      {
-        name: "updatedBy",
-        label: "Updated By",
-        field: "updatedBy",
-        classes: "hidden",
-        headerClasses: "hidden",
-      },
-    ]);
+    const columns = ref(userColumns);
 
     const firstNameRef = ref(null);
     const lastNameRef = ref(null);
@@ -401,20 +313,7 @@ export default defineComponent({
           return;
         });
 
-        const querySnapCurrentUser = await getDocs(
-          query(
-            collection(db, "users"),
-            where("email", "==", auth.currentUser.email)
-          )
-        ).catch((err) => {
-          console.log(err);
-          return;
-        });
-
-        let currentUserId = "";
-        querySnapCurrentUser.forEach((el) => {
-          currentUserId = el.id;
-        });
+        let currentUserId = localStorage.getItem("currentUserId");
 
         let emailStatus = "";
         let emailUser = "";

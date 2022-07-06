@@ -1,4 +1,24 @@
 // app global css in SCSS form
+
+@font-face {
+  font-family: "Poppins";
+  src: url("../assets/Fonts/Poppins/Poppins-Regular.ttf")
+      format("embedded-opentype"),
+    /* Internet Explorer */ url("../assets/Fonts/Poppins/Poppins-Regular.ttf")
+      format("woff2"),
+    /* Super Modern Browsers */
+      url("../assets/Fonts/Poppins/Poppins-Regular.ttf") format("woff"),
+    /* Pretty Modern Browsers */
+      url("../assets/Fonts/Poppins/Poppins-Regular.ttf") format("truetype"),
+    /* Safari, Android, iOS */
+      url("../assets/Fonts/Poppins/Poppins-Regular.ttf") format("svg");
+  /* Legacy iOS */
+}
+
+body {
+  font-family: Poppins;
+}
+
 .b-box-green {
   border: 1px solid green;
 }

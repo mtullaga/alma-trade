@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-md">
-    <div class="text-h5">M Tube Item Management</div>
+    <div class="text-h5">Motor Part Item Management</div>
     <q-table
       :rows="rows"
       :columns="columns"
@@ -78,15 +78,12 @@
 
           <q-input
             type="text"
-            v-model="sizes"
-            label="Sizes"
-            hint=""
+            v-model="model"
+            label="Model"
             :rules="[(val) => !!val || 'Field is required']"
             lazy-rules
-            ref="sizesRef"
+            ref="modelRef"
           />
-
-          <q-input type="text" v-model="model" label="Model" hint="" />
 
           <q-input type="text" v-model="brand" label="Brand" hint="" />
 
@@ -158,10 +155,10 @@ import {
   patternCodeOpt,
   categoryOpt,
 } from "src/config/optionsValue";
-import { mtubeColumns } from "src/config/grids";
+import { bikesColumns } from "src/config/grids";
 
 export default defineComponent({
-  name: "MtubePage",
+  name: "BikePage",
   setup() {
     const router = useRouter();
     const $q = useQuasar();
@@ -172,7 +169,6 @@ export default defineComponent({
     const showItemDialog = ref(false);
     const visibleColumns = ref([
       "description",
-      "sizes",
       "model",
       "brand",
       "model",
@@ -180,30 +176,28 @@ export default defineComponent({
       "agingPayable",
     ]);
 
-    const columns = ref(mtubeColumns);
+    const columns = ref(bikesColumns);
 
     const description = ref(null);
-    const sizes = ref("");
     const model = ref("");
     const brand = ref("");
     const price = ref(0);
     const agingPayable = ref(0);
 
     const desciptionRef = ref();
-    const sizesRef = ref();
+    const modelRef = ref();
     const priceRef = ref();
     const agingPayableRef = ref();
 
     const db = getFirestore();
     const currentUserId = localStorage.getItem("currentUserId");
 
-    onSnapshot(collection(db, "item_mtubes"), (coll) => {
+    onSnapshot(collection(db, "item_motor_parts"), (coll) => {
       rows.value = [];
       coll.forEach((doc) => {
         if (doc.data().active == "1") {
           rows.value.push({
             description: doc.data().description,
-            sizes: doc.data().sizes,
             model: doc.data().model,
             brand: doc.data().brand,
             price: doc.data().price,
@@ -219,29 +213,31 @@ export default defineComponent({
 
     async function saveItem() {
       desciptionRef.value.validate();
-      sizesRef.value.validate();
+      modelRef.value.validate();
       priceRef.value.validate();
       agingPayableRef.value.validate();
 
       if (
         description.value &&
-        sizes.value &&
+        model.value &&
         price.value &&
         agingPayable.value
       ) {
         if (dialogLabel.value == "Update Item") {
           try {
-            await updateDoc(doc(db, "item_mtubes", selected.value[0].uid), {
-              agingPayable: agingPayable.value,
-              description: description.value,
-              sizes: sizes.value,
-              model: model.value,
-              brand: brand.value,
-              price: price.value,
-              agingPayable: agingPayable.value,
-              updated: serverTimestamp(),
-              updatedBy: currentUserId,
-            });
+            await updateDoc(
+              doc(db, "item_motor_parts", selected.value[0].uid),
+              {
+                agingPayable: agingPayable.value,
+                description: description.value,
+                model: model.value,
+                brand: brand.value,
+                price: price.value,
+                agingPayable: agingPayable.value,
+                updated: serverTimestamp(),
+                updatedBy: currentUserId,
+              }
+            );
           } catch (err) {
             console.log(err);
             return;
@@ -256,10 +252,9 @@ export default defineComponent({
           clearFields();
         } else {
           try {
-            await addDoc(collection(db, "item_mtubes"), {
+            await addDoc(collection(db, "item_motor_parts"), {
               active: "1",
               description: description.value,
-              sizes: sizes.value,
               model: model.value,
               brand: brand.value,
               price: price.value,
@@ -295,7 +290,7 @@ export default defineComponent({
         const batch = writeBatch(db);
 
         selected.value.forEach(async (el) => {
-          batch.update(doc(db, "item_mtubes", el.uid), {
+          batch.update(doc(db, "item_motor_parts", el.uid), {
             active: "0",
             updated: serverTimestamp(),
             updatedBy: currentUserId,
@@ -325,7 +320,6 @@ export default defineComponent({
 
       agingPayable.value = selected.value[0].agingPayable;
       description.value = selected.value[0].description;
-      sizes.value = selected.value[0].sizes;
       price.value = selected.value[0].price;
       model.value = selected.value[0].model;
       brand.value = selected.value[0].brand;
@@ -334,7 +328,6 @@ export default defineComponent({
     function clearFields() {
       agingPayable.value = 0;
       description.value = "";
-      sizes.value = "";
       price.value = 0;
       model.value = "";
       brand.value = "";
@@ -352,12 +345,11 @@ export default defineComponent({
       description,
       model,
       brand,
-      sizes,
       price,
       agingPayable,
 
       desciptionRef,
-      sizesRef,
+      modelRef,
       priceRef,
       agingPayableRef,
 

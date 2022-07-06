@@ -11,6 +11,12 @@ const routes = [
       { path: "m-tubes", component: () => import("pages/MtubePage.vue") },
       { path: "bikes", component: () => import("pages/BikePage.vue") },
       { path: "users", component: () => import("pages/UserPage.vue") },
+      { path: "stock-in", component: () => import("pages/StockInPage.vue") },
+      { path: "stock-out", component: () => import("pages/StockOutPage.vue") },
+      {
+        path: "motor-parts",
+        component: () => import("pages/MotorPartPage.vue"),
+      },
     ],
   },
   {
@@ -19,7 +25,7 @@ const routes = [
   },
   {
     path: "/accept-invitation/:token",
-    component: () => import("pages/UserAcceptInvitation.vue"),
+    component: () => import("pages/UserAcceptInvitationPage.vue"),
   },
 
   // Always leave this as last one,
